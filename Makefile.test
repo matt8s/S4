@@ -95,28 +95,8 @@ S4r_LIBNAME = $(OBJDIR)/libS4r.a
 #### This should all work fine, you must modify BOOST_INC, BOOST_LIBS,
 #### and PREFIX if you want to install boost to a different location
 
-# Specify the paths to the boost include and lib directories
-BOOST_PREFIX=${CURDIR}/S4
-BOOST_INC = -I$(BOOST_PREFIX)/include
-BOOST_LIBS = -L$(BOOST_PREFIX)/lib/ -lboost_serialization
-BOOST_URL=https://sourceforge.net/projects/boost/files/boost/1.74.0/boost_1_74_0.tar.gz
-BOOST_FILE=boost.tar.gz
-# Target for downloading boost from above URL
-$(BOOST_FILE):
-	wget $(BOOST_URL) -O $(BOOST_FILE)
-
-# Target for extracting boost from archive and compiling. Depends on download target above
-${CURDIR}/S4/lib: $(BOOST_FILE)
-	$(eval BOOST_DIR := $(shell tar tzf $(BOOST_FILE) | sed -e 's@/.*@@' | uniq))
-	@echo Boost dir is $(BOOST_DIR)
-	tar -xzvf $(BOOST_FILE)
-	mv $(BOOST_DIR) boost_src
-	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && ./b2 install
-# Final target which pulls everything together
-boost: $(BOOST_PREFIX)/lib
 
 ##################### DO NOT EDIT BELOW THIS LINE #####################
-
 
 #### Set the compilation flags
 
@@ -290,7 +270,6 @@ $(OBJDIR)/S4k/Eigensystems.o: S4/RNP/Eigensystems.cpp
 
 
 
-
 $(OBJDIR)/S4r/Material.o: S4r/Material.cpp S4r/Material.hpp S4r/Types.hpp
 	$(CXX) -c $(CFLAGS) $(CPPFLAGS) -I. $< -o $@
 $(OBJDIR)/S4r/LatticeGridRect.o: S4r/LatticeGridRect.cpp S4r/PeriodicMesh.hpp S4r/Types.hpp
@@ -319,31 +298,6 @@ $(OBJDIR)/S4r/periodic_off2.o: S4r/periodic_off2.c S4r/periodic_off2.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 $(OBJDIR)/S4r/predicates.o: S4r/predicates.c
 	$(CC) -c -O3 $< -o $@
-
-#### Lua Frontend
-
-$(OBJDIR)/S4k/main_lua.o: S4/main_lua.c objdir
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(LUA_INC) $< -o $@
-S4lua: $(OBJDIR)/S4k/main_lua.o $(S4_LIBNAME) sampler
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $< -o $(S4_BINNAME) $(S4_LIBNAME) $(LIBS) $(LUA_LIB)
-
-$(OBJDIR)/S4r/main_lua.o: S4r/main_lua.c
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(LUA_INC) $< -o $@
-$(OBJDIR)/S4r/lua_named_arg.o: S4r/lua_named_arg.c
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(LUA_INC) $< -o $@
-$(OBJDIR)/S4r/S4r.o: S4r/S4r.cpp
-	$(CXX) -c $(CFLAGS) $(CPPFLAGS) $(LUA_INC) $< -o $@
-S4rlua: objdir $(OBJDIR)/S4r/main_lua.o $(OBJDIR)/S4r/lua_named_arg.o $(OBJDIR)/S4r/S4r.o $(S4r_LIBNAME)
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(OBJDIR)/S4r/main_lua.o $(OBJDIR)/S4r/lua_named_arg.o $(OBJDIR)/S4r/S4r.o -o $@ $(S4r_LIBNAME) $(LIBS) $(LUA_LIB)
-
-sampler: FunctionSampler1D.so FunctionSampler2D.so
-FunctionSampler1D.so: modules/function_sampler_1d.c modules/function_sampler_1d.h modules/lua_function_sampler_1d.c
-	gcc -c $(OPTFLAGS) -fpic -Wall -I. modules/function_sampler_1d.c -o $(OBJDIR)/modules/function_sampler_1d.o
-	gcc $(OPTFLAGS) -shared -fpic -Wall $(LUA_INC) -o $(OBJDIR)/FunctionSampler1D.so $(OBJDIR)/modules/function_sampler_1d.o modules/lua_function_sampler_1d.c $(LUA_LIB)
-FunctionSampler2D.so: modules/function_sampler_2d.c modules/function_sampler_2d.h modules/lua_function_sampler_2d.c
-	gcc -c $(OPTFLAGS) -fpic -Wall -I. modules/function_sampler_2d.c -o $(OBJDIR)/modules/function_sampler_2d.o
-	gcc -c -O2 -fpic -Wall -I. modules/predicates.c -o $(OBJDIR)/modules/mod_predicates.o
-	gcc $(OPTFLAGS) -shared -fpic -Wall $(LUA_INC) -o $(OBJDIR)/FunctionSampler2D.so $(OBJDIR)/modules/function_sampler_2d.o $(OBJDIR)/modules/mod_predicates.o modules/lua_function_sampler_2d.c $(LUA_LIB)
 
 #### Python extension
 
