@@ -80,8 +80,7 @@ S4_PROF = 0
 CXX = g++
 CC  = gcc
 
-CFLAGS += -O3 -fPIC
-#CFLAGS = -Wall -O2 -m64 -march=native -mtune=native -fPIC
+CFLAGS = -O3 -fPIC -march=native -mtune=native
 
 # options for Sampler module
 OPTFLAGS = -O3
