@@ -1,6 +1,12 @@
-If you are looking for a more user-friendly interface to S4 (wavelength-dependent calculations, material management etc.), check out my Python3 package [RayFlare](https://rayflare.readthedocs.io)
+If you are looking for a more user-friendly interface to S4 (wavelength-dependent calculations, material management etc.), check out my Python3 package [RayFlare](https://rayflare.readthedocs.io).
 
 # Installation instructions (64-bit Ubuntu 16/18/20 or MacOS):
+
+## Python prerequisites
+
+```
+pip install numpy wheel setuptools
+```
 
 ## Key steps:
 
