@@ -69,8 +69,8 @@ S4_DEBUG = 0
 S4_PROF = 0
 
 # Specify custom compilers if needed
-CXX = g++
-CC  = gcc
+CXX = clang++
+CC  = clang
 
 #CFLAGS += -O3 -fPIC
 CFLAGS = -Wall -O3 -m64 -march=native -mtune=native -msse3 -msse2 -msse -fPIC
