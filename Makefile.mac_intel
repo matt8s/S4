@@ -61,14 +61,6 @@ PTHREAD_INC = -DHAVE_UNISTD_H
 CHOLMOD_INC = -I/usr/local/include/suitesparse
 CHOLMOD_LIB = -lcholmod -lamd -lcolamd -lcamd -lccolamd
 
-# Specify the MPI library
-# For example, on Fedora: dnf  install openmpi-devel
-#MPI_INC = -I/usr/include/openmpi-x86_64/openmpi/ompi
-#MPI_LIB = -lmpi
-# or, explicitly link to the library with -L, example below
-#MPI_LIB = -L/usr/lib64/openmpi/lib/libmpi.so
-#MPI_INC = -I/usr/include/openmpi-x86_64/openmpi
-#MPI_LIB = -L/usr/lib64/openmpi/lib/libmpi.so
 
 # Enable S4_TRACE debugging
 # values of 1, 2, 3 enable debugging, with verbosity increasing as 
@@ -81,7 +73,7 @@ CXX = g++
 CC  = gcc
 
 #CFLAGS += -O3 -fPIC
-CFLAGS = -Wall -O3 -m64 -mcpu=apple-m1 -mtune=native -fPIC
+CFLAGS = -Wall -O3 -m64 -march=native -mtune=native -msse3 -msse2 -msse -fPIC
 
 # options for Sampler module
 OPTFLAGS = -O3
@@ -90,10 +82,6 @@ OBJDIR = ./build
 S4_BINNAME = $(OBJDIR)/S4
 S4_LIBNAME = $(OBJDIR)/libS4.a
 S4r_LIBNAME = $(OBJDIR)/libS4r.a
-
-# BOOST_INC = -I/opt/homebrew/include/boost
-# BOOST_LIBS = -lboost_serialization
-# BOOST_LIBS = 
 
 ##################### DO NOT EDIT BELOW THIS LINE #####################
 
