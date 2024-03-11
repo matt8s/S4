@@ -58,7 +58,7 @@ PTHREAD_INC = -DHAVE_UNISTD_H
 # Alternate Example: I compiled and istalled SuiteSpares in the directory above this S4 directory
 # CHOLMOD_INC = -I../SuiteSparse/include/
 # CHOLMOD_LIB = -L../SuiteSparse/lib/ -lcholmod -lamd -lcolamd -lcamd -lccolamd
-CHOLMOD_INC = -I/usr/include/suitesparse
+CHOLMOD_INC = -I/opt/homebrew/include/suitesparse
 CHOLMOD_LIB = -lcholmod -lamd -lcolamd -lcamd -lccolamd
 
 # Specify the MPI library
