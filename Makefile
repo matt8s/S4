@@ -96,7 +96,7 @@ S4r_LIBNAME = $(OBJDIR)/libS4r.a
 #### and PREFIX if you want to install boost to a different location
 
 # Specify the paths to the boost include and lib directories
-BOOST_-L$(BOOST_PREFIX)/lib/PREFIX=${CURDIR}/S4
+BOOST_PREFIX=${CURDIR}/S4
 BOOST_INC = -I$(BOOST_PREFIX)/include
 BOOST_LIBS =  -lboost_serialization
 BOOST_URL=https://sourceforge.net/projects/boost/files/boost/1.74.0/boost_1_74_0.tar.gz
