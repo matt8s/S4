@@ -46,6 +46,7 @@ MPI_LIB =
 # Specify custom compilers if needed
 CXX = g++
 CC  = gcc
+PYTHON ?= python3
 
 CFLAGS = -O3 -msse -msse2 -msse3 -static
 
@@ -245,9 +246,10 @@ S4rlua: objdir $(OBJDIR)/S4r/main_lua.o $(OBJDIR)/S4r/lua_named_arg.o $(OBJDIR)/
 #### Python extension
 
 S4_pyext: objdir $(S4_LIBNAME)
-	echo "$(LIBS)" > $(OBJDIR)/tmp.txt
-	sh gensetup.py.sh $(OBJDIR) $(S4_LIBNAME)
-	python setup.py build
+	S4_OBJDIR="$(OBJDIR)" \
+	S4_LIBFILE="$(S4_LIBNAME)" \
+	S4_LINK_FLAGS='$(LIBS)' \
+	$(PYTHON) -m pip install --upgrade --no-build-isolation .
 
 clean:
 	rm -rf $(OBJDIR)
