@@ -39,5 +39,34 @@ jobs:
         run: |
           python -m pip install --force-reinstall "numpy==${{ matrix.numpy }}"
           python -m pip check
-          python -c "import S4; print(S4.__file__)"
-          python PythonTest.py
+          python - <<'PY'
+          import numpy as np
+          import S4
+
+          sim = S4.New(Lattice=((1.0, 0.0), (0.0, 1.0)), NumBasis=9)
+          sim.SetMaterial(Name="vacuum", Epsilon=1.0)
+          sim.AddLayer(Name="top", Thickness=0.0, Material="vacuum")
+          sim.AddLayer(Name="bottom", Thickness=0.0, Material="vacuum")
+          sim.SetExcitationPlanewave(
+              IncidenceAngles=(0.0, 0.0),
+              sAmplitude=1.0,
+              pAmplitude=0.0,
+              Order=0,
+          )
+          sim.SetFrequency(1.0)
+
+          forward, backward = sim.GetPowerFlux(Layer="top", zOffset=0.0)
+          assert np.isfinite(forward.real)
+          assert np.isfinite(backward.real)
+
+          efield, hfield = sim.GetFieldsOnGridNumpy(
+              z=0.0,
+              NumSamples=(4, 4),
+          )
+          assert efield.shape == (4, 4, 3)
+          assert hfield.shape == (4, 4, 3)
+          assert np.isfinite(efield).all()
+          assert np.isfinite(hfield).all()
+
+          print(S4.__file__)
+          PY
