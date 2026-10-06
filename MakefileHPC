@@ -51,6 +51,7 @@ MPI_INC = -I$(MPI_HOME)/include
 # Specify custom compilers if needed
 CXX = $(MPI_HOME)/bin/mpic++
 CC  = $(MPI_HOME)/bin/mpicc
+PYTHON ?= python3
 
 #CFLAGS += -O3 -fPIC
 CFLAGS = -O3 -msse3 -msse2 -msse -fPIC
@@ -240,11 +241,10 @@ check:
 	@echo $(LIBS)
 
 S4_pyext: objdir $(S4_LIBNAME)
-	echo "Linking...."
-	echo $(EXTRA_FLAGS) $(EXTRA_DIRS)
-	sh gensetupHPC.py.sh $(OBJDIR) $(S4_LIBNAME) "$(LIBS)" "$(EXTRA_FLAGS)" "$(EXTRA_DIRS)"
-	python setup.py build
-	#pip3 install --upgrade ./
+	S4_OBJDIR="$(OBJDIR)" \
+	S4_LIBFILE="$(S4_LIBNAME)" \
+	S4_LINK_FLAGS='$(LIBS)' \
+	$(PYTHON) -m pip install --upgrade --no-build-isolation .
 
 clean:
 	rm S4.so
