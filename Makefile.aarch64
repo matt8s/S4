@@ -79,6 +79,7 @@ S4_PROF = 0
 # Specify custom compilers if needed
 CXX = g++
 CC  = gcc
+PYTHON ?= python3
 
 CFLAGS = -O3 -fPIC -march=native -mtune=native
 
@@ -347,8 +348,12 @@ FunctionSampler2D.so: modules/function_sampler_2d.c modules/function_sampler_2d.
 #### Python extension
 
 S4_pyext: objdir $(S4_LIBNAME)
-	sh gensetup.py.sh $(OBJDIR) $(S4_LIBNAME) "$(LIBS)" $(BOOST_PREFIX)
-	pip3 install --upgrade ./
+	S4_OBJDIR="$(OBJDIR)" \
+	S4_LIBFILE="$(S4_LIBNAME)" \
+	S4_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
+	S4_RUNTIME_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
+	S4_LINK_FLAGS='$(LIBS)' \
+	$(PYTHON) -m pip install --upgrade --no-build-isolation .
 
 clean:
 	rm -rf $(OBJDIR)
