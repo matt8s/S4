@@ -4,8 +4,10 @@ If you are looking for a more user-friendly interface to S4 (wavelength-dependen
 
 ## Python prerequisites
 
-```
-pip install numpy wheel setuptools
+Use a supported Python 3 environment with pip. The build installs its Python build dependencies from `pyproject.toml`.
+
+```bash
+python -m pip install --upgrade pip
 ```
 
 ## Key steps:
@@ -22,6 +24,14 @@ using Homebrew (see below). If you want to use Boost libraries in a different lo
 
 **Note for users of new (late 2020 onwards) Apple machines with M1/Apple silicon/ARM chips: you will need to use Makefile.m1
 to compile successfully, see notes below on how to do this.**
+
+## Python package build
+
+The Python extension now uses a checked-in setuptools configuration and PEP 517 metadata rather than generating `setup.py` during each build.
+The existing distribution name (`S4`) and version (`1.1`) are preserved.
+The build uses the active `python3` by default; set `PYTHON=/path/to/python` when another interpreter is required.
+
+Linux CI builds and imports the extension across multiple Python and NumPy versions, including NumPy 1.26 and NumPy 2.x runtime environments.
 
 ## Installing relevant libraries etc.:
 
@@ -58,7 +68,8 @@ to e.g.:
 [path of target python or virtual environment] setup.py install
 ```
 
-You can install S4 into a virtual environment automatically by just activating that environment in your terminal before running `make S4_pyext`.
+You can install S4 into a virtual environment automatically by activating that environment before running `make S4_pyext`.
+You can also select the interpreter explicitly, for example `make S4_pyext PYTHON=python3.12`.
 
 See [here](https://rayflare.readthedocs.io/en/latest/Installation/installation.html) for more extensive instructions.
 
