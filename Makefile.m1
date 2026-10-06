@@ -79,6 +79,7 @@ S4_PROF = 0
 # Specify custom compilers if needed
 CXX = clang++
 CC  = clang
+PYTHON ?= python3
 
 #CFLAGS += -O3 -fPIC
 CFLAGS = -Wall -O3 -m64 -mcpu=apple-m1 -mtune=native -fPIC
@@ -330,8 +331,12 @@ FunctionSampler2D.so: modules/function_sampler_2d.c modules/function_sampler_2d.
 BOOST_PREFIX = /opt/homebrew/
 
 S4_pyext: objdir $(S4_LIBNAME)
-	sh gensetup.py.sh $(OBJDIR) $(S4_LIBNAME) "$(LIBS)" $(BOOST_PREFIX)
-	pip3 install --upgrade --use-pep517 --no-build-isolation ./
+	S4_OBJDIR="$(OBJDIR)" \
+	S4_LIBFILE="$(S4_LIBNAME)" \
+	S4_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
+	S4_RUNTIME_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
+	S4_LINK_FLAGS='$(LIBS)' \
+	$(PYTHON) -m pip install --upgrade --no-build-isolation .
 
 clean:
 	rm -rf $(OBJDIR)
