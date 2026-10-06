@@ -31,7 +31,7 @@ The Python extension now uses a checked-in setuptools configuration and PEP 517 
 The existing distribution name (`S4`) and version (`1.1`) are preserved.
 The build uses the active `python3` by default; set `PYTHON=/path/to/python` when another interpreter is required.
 
-Linux CI builds and imports the extension across multiple Python and NumPy versions, including NumPy 1.26 and NumPy 2.x runtime environments.
+Linux CI is configured to build and import the extension across multiple Python and NumPy versions, including NumPy 1.26 and NumPy 2.x runtime environments.
 
 ## Installing relevant libraries etc.:
 
