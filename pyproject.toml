@@ -1,0 +1,22 @@
+[build-system]
+requires = [
+    "setuptools>=77",
+    "wheel",
+    "numpy>=2,<3",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "S4"
+version = "1.1"
+description = "Stanford Stratified Structure Solver (S4): Fourier Modal Method"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "GPL-2.0-or-later"
+license-files = ["COPYING"]
+dependencies = [
+    "numpy>=1.26,<3",
+]
+
+[tool.setuptools]
+py-modules = []
