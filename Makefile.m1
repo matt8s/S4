@@ -336,7 +336,7 @@ S4_pyext: objdir $(S4_LIBNAME)
 	S4_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
 	S4_RUNTIME_LIBRARY_DIRS="$(BOOST_PREFIX)/lib" \
 	S4_LINK_FLAGS='$(LIBS)' \
-	$(PYTHON) -m pip install --upgrade --no-build-isolation .
+	$(PYTHON) -m pip install --upgrade .
 
 clean:
 	rm -rf $(OBJDIR)
